@@ -1,3 +1,3 @@
 # Dokumentace
 
-- [Čárové kódy UPC-A](upc-a.md): zadání, ověření kódu, vykreslení, skenování a uložení obrázku.
+- [Sokoban](sokoban.md): pravidla hry, textové úrovně, skóre, ukládání, náhledy a editor.
