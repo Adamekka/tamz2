@@ -1,6 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+}
+
+val localProperties = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+val weatherApiKey = providers.gradleProperty("OPENWEATHER_API_KEY").orNull
+    ?: localProperties.getProperty("OPENWEATHER_API_KEY")
+    ?: throw GradleException("Set OPENWEATHER_API_KEY in local.properties before building the app.")
+require(weatherApiKey.isNotBlank() && weatherApiKey.all { it.isLetterOrDigit() }) {
+    "OPENWEATHER_API_KEY must be a non-empty alphanumeric key."
 }
 
 android {
@@ -15,6 +27,7 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "OPENWEATHER_API_KEY", "\"$weatherApiKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -44,6 +58,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

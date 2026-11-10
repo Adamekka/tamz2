@@ -1,3 +1,3 @@
 # Dokumentace
 
-- [Sokoban](sokoban.md): pravidla hry, textové úrovně, skóre, ukládání, náhledy a editor.
+- [Počasí](weather.md): ovládání, OpenWeatherMap API a sestavení aplikace.
